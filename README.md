@@ -73,20 +73,18 @@ If automatic download fails or you're building offline, you can pre-download the
 ```bash
 # Download NetBird CLI binary (choose your architecture)
 # For x86_64:
-wget https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird_0.60.9_linux_amd64.tar.gz
+wget https://github.com/netbirdio/netbird/releases/download/v0.61.0/netbird_0.61.0_linux_amd64.tar.gz
 
 # For ARM64/aarch64:
-wget https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird_0.60.9_linux_arm64.tar.gz
+wget https://github.com/netbirdio/netbird/releases/download/v0.61.0/netbird_0.61.0_linux_arm64.tar.gz
 
-# Download NetBird UI binary (choose your architecture)
-# For x86_64:
-wget https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird-ui-linux_0.60.9_linux_amd64.tar.gz
-
-# For ARM64/aarch64:
-wget https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird-ui-linux_0.60.9_linux_arm64.tar.gz
+# Download NetBird UI binary (x86_64 only - ARM64 UI is not available upstream)
+wget https://github.com/netbirdio/netbird/releases/download/v0.61.0/netbird-ui-linux_0.61.0_linux_amd64.tar.gz
 ```
 
 Place the downloaded files in the `.flatpak-builder/downloads/` directory (flatpak-builder will check there for cached sources), then run the build command.
+
+**Note:** The NetBird UI is only available for x86_64. On ARM64/aarch64, only the CLI will be installed.
 
 ### Build for a specific architecture
 
@@ -262,12 +260,12 @@ flatpak-builder --verbose --force-clean build-dir io.netbird.Client.yml
 
 To verify the downloaded binaries match expected checksums:
 ```bash
-# Expected checksums for v0.60.9 (x86_64):
-# netbird: 7b6e3f7d06f49fce640038b7793d1315336322fe0e9ae85b4a25a00dbf48fdb9
-# netbird-ui: 81b7fcd110c1d87c993a004a94a28055147298abfbad7f413fbd350984d95a11
+# Expected checksums for v0.61.0 (x86_64):
+# netbird: eaa435a636297da6f082440d91bacce6221468c11d1127969fe6c132afc5879e
+# netbird-ui: 14a7674bc5f4ad3578e9d2098b13d7ffe0ddb70fccb2367817c4124911e590c2
 
-sha256sum netbird_0.60.9_linux_amd64.tar.gz
-sha256sum netbird-ui-linux_0.60.9_linux_amd64.tar.gz
+sha256sum netbird_0.61.0_linux_amd64.tar.gz
+sha256sum netbird-ui-linux_0.61.0_linux_amd64.tar.gz
 ```
 
 ## Links
