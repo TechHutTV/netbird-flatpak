@@ -56,13 +56,35 @@ cd netbird-flatpak
 
 ### Build and install locally
 
+The build process will **automatically download** the NetBird binaries from GitHub releases. Ensure you have a working internet connection.
+
 ```bash
-# Build the Flatpak
+# Build the Flatpak (downloads binaries automatically)
 flatpak-builder --force-clean build-dir io.netbird.Client.yml
 
 # Install to user directory
 flatpak-builder --user --install --force-clean build-dir io.netbird.Client.yml
 ```
+
+### Manual Binary Download (Offline Build)
+
+If automatic download fails or you're building offline, you can pre-download the binaries:
+
+```bash
+# Download NetBird CLI binary (choose your architecture)
+# For x86_64:
+wget https://github.com/netbirdio/netbird/releases/download/v0.61.0/netbird_0.61.0_linux_amd64.tar.gz
+
+# For ARM64/aarch64:
+wget https://github.com/netbirdio/netbird/releases/download/v0.61.0/netbird_0.61.0_linux_arm64.tar.gz
+
+# Download NetBird UI binary (x86_64 only - ARM64 UI is not available upstream)
+wget https://github.com/netbirdio/netbird/releases/download/v0.61.0/netbird-ui-linux_0.61.0_linux_amd64.tar.gz
+```
+
+Place the downloaded files in the `.flatpak-builder/downloads/` directory (flatpak-builder will check there for cached sources), then run the build command.
+
+**Note:** The NetBird UI is only available for x86_64. On ARM64/aarch64, only the CLI will be installed.
 
 ### Build for a specific architecture
 
@@ -212,6 +234,39 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 ## License
 
 This Flatpak packaging is provided under the BSD-3-Clause license, matching the NetBird project license.
+
+## Troubleshooting
+
+### "cannot stat 'netbird': No such file or directory"
+
+This error occurs when flatpak-builder cannot find the binary during the build. Common causes:
+
+1. **Download failed**: Check your internet connection and try again
+2. **Architecture mismatch**: The manifest only supports `x86_64` and `aarch64`. Check your architecture with `uname -m`
+3. **Cached download corrupted**: Clear the cache and rebuild:
+   ```bash
+   rm -rf .flatpak-builder/
+   flatpak-builder --force-clean build-dir io.netbird.Client.yml
+   ```
+
+### Build hangs during download
+
+If the build appears to hang, it may be downloading large files. Add `--verbose` to see progress:
+```bash
+flatpak-builder --verbose --force-clean build-dir io.netbird.Client.yml
+```
+
+### Verifying downloaded checksums
+
+To verify the downloaded binaries match expected checksums:
+```bash
+# Expected checksums for v0.61.0 (x86_64):
+# netbird: eaa435a636297da6f082440d91bacce6221468c11d1127969fe6c132afc5879e
+# netbird-ui: 14a7674bc5f4ad3578e9d2098b13d7ffe0ddb70fccb2367817c4124911e590c2
+
+sha256sum netbird_0.61.0_linux_amd64.tar.gz
+sha256sum netbird-ui-linux_0.61.0_linux_amd64.tar.gz
+```
 
 ## Links
 
