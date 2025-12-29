@@ -33,13 +33,26 @@ modules:
       - aarch64
     build-commands:
       - |
+        echo "=== NetBird Build Diagnostics ==="
+        echo "Architecture: $(uname -m)"
+        echo "Current directory: $(pwd)"
+        echo "Available files:"
+        ls -la
+        echo "================================="
         if [ ! -f netbird ]; then
-          echo "Error: netbird binary not found. This may indicate a download failure."
-          echo "Try clearing the cache: rm -rf .flatpak-builder/"
-          echo "Available files in build directory:"
-          ls -la
+          echo ""
+          echo "ERROR: netbird binary not found!"
+          echo ""
+          echo "This usually means the download or extraction failed."
+          echo "Troubleshooting steps:"
+          echo "  1. Check your internet connection"
+          echo "  2. Clear the build cache: rm -rf .flatpak-builder/"
+          echo "  3. Try building with --verbose flag"
+          echo "  4. Verify your architecture is supported (x86_64 or aarch64)"
+          echo ""
           exit 1
         fi
+        echo "Found netbird binary, proceeding with install..."
       - install -Dm755 netbird /app/bin/netbird
     sources:
       - type: archive
@@ -60,13 +73,26 @@ modules:
       - x86_64
     build-commands:
       - |
+        echo "=== NetBird UI Build Diagnostics ==="
+        echo "Architecture: $(uname -m)"
+        echo "Current directory: $(pwd)"
+        echo "Available files:"
+        ls -la
+        echo "====================================="
         if [ ! -f netbird-ui ]; then
-          echo "Error: netbird-ui binary not found. This may indicate a download failure."
-          echo "Try clearing the cache: rm -rf .flatpak-builder/"
-          echo "Available files in build directory:"
-          ls -la
+          echo ""
+          echo "ERROR: netbird-ui binary not found!"
+          echo ""
+          echo "This usually means the download or extraction failed."
+          echo "Troubleshooting steps:"
+          echo "  1. Check your internet connection"
+          echo "  2. Clear the build cache: rm -rf .flatpak-builder/"
+          echo "  3. Try building with --verbose flag"
+          echo "  4. Note: netbird-ui is only available for x86_64"
+          echo ""
           exit 1
         fi
+        echo "Found netbird-ui binary, proceeding with install..."
       - install -Dm755 netbird-ui /app/bin/netbird-ui
     sources:
       - type: archive
