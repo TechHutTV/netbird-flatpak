@@ -4,6 +4,9 @@ build-dir/
 repo/
 *.flatpak
 
+# Downloaded sources
+sources/
+
 # Editor files
 *.swp
 *.swo

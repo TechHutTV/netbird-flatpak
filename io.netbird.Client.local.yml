@@ -1,0 +1,58 @@
+app-id: io.netbird.Client
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: netbird-ui
+
+finish-args:
+  # Network access (required for VPN client)
+  - --share=network
+  # X11 and Wayland support for UI
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
+  # GPU access for UI rendering
+  - --device=dri
+  # Access to TUN device for VPN tunnel (requires host configuration)
+  - --device=all
+  # D-Bus access for system service communication
+  - --system-talk-name=io.netbird.daemon
+  - --talk-name=org.freedesktop.Notifications
+  # Filesystem access for configuration
+  - --filesystem=~/.config/netbird:create
+  - --filesystem=/etc/netbird:ro
+
+modules:
+  - name: netbird
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 netbird /app/bin/netbird
+    sources:
+      - type: file
+        path: sources/netbird/netbird
+
+  - name: netbird-ui
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 netbird-ui /app/bin/netbird-ui
+    sources:
+      - type: file
+        path: sources/netbird-ui/netbird-ui
+
+  - name: metadata
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 io.netbird.Client.desktop /app/share/applications/io.netbird.Client.desktop
+      - install -Dm644 io.netbird.Client.metainfo.xml /app/share/metainfo/io.netbird.Client.metainfo.xml
+      - install -Dm644 netbird-icon-256.png /app/share/icons/hicolor/256x256/apps/io.netbird.Client.png
+      - install -Dm644 netbird-icon.svg /app/share/icons/hicolor/scalable/apps/io.netbird.Client.svg
+    sources:
+      - type: file
+        path: io.netbird.Client.desktop
+      - type: file
+        path: io.netbird.Client.metainfo.xml
+      - type: file
+        path: icons/netbird-icon-256.png
+      - type: file
+        path: icons/netbird-icon.svg

@@ -54,7 +54,9 @@ git clone https://github.com/TechHutTV/netbird-flatpak.git
 cd netbird-flatpak
 ```
 
-### Build and install locally
+### Method 1: Build with automatic download
+
+This method lets flatpak-builder download sources automatically:
 
 ```bash
 # Build the Flatpak
@@ -64,14 +66,20 @@ flatpak-builder --force-clean build-dir io.netbird.Client.yml
 flatpak-builder --user --install --force-clean build-dir io.netbird.Client.yml
 ```
 
-### Build for a specific architecture
+### Method 2: Build with pre-downloaded sources (recommended)
+
+If you have network issues or prefer to download sources manually:
 
 ```bash
-# For x86_64
-flatpak-builder --arch=x86_64 --force-clean build-dir io.netbird.Client.yml
+# Step 1: Download the binaries
+chmod +x download-sources.sh
+./download-sources.sh
 
-# For ARM64/aarch64
-flatpak-builder --arch=aarch64 --force-clean build-dir io.netbird.Client.yml
+# Step 2: Build using local sources
+flatpak-builder --force-clean build-dir io.netbird.Client.local.yml
+
+# Step 3: Install to user directory
+flatpak-builder --user --install --force-clean build-dir io.netbird.Client.local.yml
 ```
 
 ### Create a distributable bundle
@@ -196,13 +204,15 @@ flatpak-builder --run build-dir io.netbird.Client.yml netbird-ui
 
 ```
 netbird-flatpak/
-├── io.netbird.Client.yml          # Main Flatpak manifest
+├── io.netbird.Client.yml          # Main Flatpak manifest (auto-download)
+├── io.netbird.Client.local.yml    # Manifest for pre-downloaded sources
 ├── io.netbird.Client.desktop      # Desktop entry file
 ├── io.netbird.Client.metainfo.xml # AppStream metadata
+├── download-sources.sh            # Script to download NetBird binaries
 ├── icons/
-│   ├── netbird-icon-256.png       # PNG icon (256x256)
+│   ├── netbird-icon-256.png       # PNG icon
 │   └── netbird-icon.svg           # SVG icon
-└── README.md                       # This file
+└── README.md                      # This file
 ```
 
 ## Contributing
