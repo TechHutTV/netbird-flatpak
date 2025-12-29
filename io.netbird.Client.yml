@@ -1,0 +1,76 @@
+app-id: io.netbird.Client
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: netbird-ui
+
+finish-args:
+  # Network access (required for VPN client)
+  - --share=network
+  # X11 and Wayland support for UI
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
+  # GPU access for UI rendering
+  - --device=dri
+  # Access to TUN device for VPN tunnel (requires host configuration)
+  - --device=all
+  # D-Bus access for system service communication
+  - --system-talk-name=io.netbird.daemon
+  - --talk-name=org.freedesktop.Notifications
+  # Filesystem access for configuration
+  - --filesystem=~/.config/netbird:create
+  - --filesystem=/etc/netbird:ro
+  # Environment variable to help with tray icon
+  - --env=DISPLAY=:0
+
+modules:
+  - name: netbird
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 netbird /app/bin/netbird
+    sources:
+      - type: archive
+        only-arches:
+          - x86_64
+        url: https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird_0.60.9_linux_amd64.tar.gz
+        sha256: 7b6e3f7d06f49fce640038b7793d1315336322fe0e9ae85b4a25a00dbf48fdb9
+      - type: archive
+        only-arches:
+          - aarch64
+        url: https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird_0.60.9_linux_arm64.tar.gz
+        sha256: 0a6e732cb79ac64d452198683d4f2a7460e340c17969c01ee49a3f90b79de508
+
+  - name: netbird-ui
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 netbird-ui /app/bin/netbird-ui
+    sources:
+      - type: archive
+        only-arches:
+          - x86_64
+        url: https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird-ui-linux_0.60.9_linux_amd64.tar.gz
+        sha256: 81b7fcd110c1d87c993a004a94a28055147298abfbad7f413fbd350984d95a11
+      - type: archive
+        only-arches:
+          - aarch64
+        url: https://github.com/netbirdio/netbird/releases/download/v0.60.9/netbird-ui-linux_0.60.9_linux_arm64.tar.gz
+        sha256: 0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
+
+  - name: metadata
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 io.netbird.Client.desktop /app/share/applications/io.netbird.Client.desktop
+      - install -Dm644 io.netbird.Client.metainfo.xml /app/share/metainfo/io.netbird.Client.metainfo.xml
+      - install -Dm644 netbird-icon-256.png /app/share/icons/hicolor/256x256/apps/io.netbird.Client.png
+      - install -Dm644 netbird-icon.svg /app/share/icons/hicolor/scalable/apps/io.netbird.Client.svg
+    sources:
+      - type: file
+        path: io.netbird.Client.desktop
+      - type: file
+        path: io.netbird.Client.metainfo.xml
+      - type: file
+        path: icons/netbird-icon-256.png
+      - type: file
+        path: icons/netbird-icon.svg

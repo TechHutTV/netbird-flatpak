@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.netbird.Client</id>
+  <name>NetBird</name>
+  <summary>Secure WireGuard-based overlay network client</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>BSD-3-Clause</project_license>
+  <developer id="io.netbird">
+    <name>NetBird GmbH</name>
+  </developer>
+  <description>
+    <p>
+      NetBird creates a WireGuard-based overlay network that automatically connects
+      your machines over an encrypted tunnel, leaving behind the hassle of opening ports,
+      complex firewall rules, VPN gateways, and so forth.
+    </p>
+    <p>
+      NetBird provides Zero Trust Networking with SSO/MFA integration and granular
+      access controls. It uses a lightweight agent that runs on all your devices and
+      automatically creates secure point-to-point WireGuard connections.
+    </p>
+    <p>Key features:</p>
+    <ul>
+      <li>Automatic peer-to-peer WireGuard connections</li>
+      <li>SSO/MFA integration with Identity Providers</li>
+      <li>Granular access control policies</li>
+      <li>Network Routes for accessing remote resources</li>
+      <li>DNS management for private domains</li>
+      <li>Cross-platform support</li>
+    </ul>
+    <p>
+      Note: For full VPN functionality, the NetBird daemon service must be installed
+      and running on the host system. This Flatpak provides the user interface and
+      CLI tools that communicate with the system service.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.netbird.Client.desktop</launchable>
+  <url type="homepage">https://netbird.io/</url>
+  <url type="bugtracker">https://github.com/netbirdio/netbird/issues</url>
+  <url type="help">https://docs.netbird.io/</url>
+  <url type="vcs-browser">https://github.com/netbirdio/netbird</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>NetBird connection status</caption>
+      <image>https://netbird.io/docs/overview/netbird-overview.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.60.9" date="2024-12-22">
+      <description>
+        <p>Changes in this release:</p>
+        <ul>
+          <li>Client: lookup for management domains using an additional timeout</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <categories>
+    <category>Network</category>
+    <category>VPN</category>
+    <category>Security</category>
+  </categories>
+  <keywords>
+    <keyword>vpn</keyword>
+    <keyword>wireguard</keyword>
+    <keyword>network</keyword>
+    <keyword>security</keyword>
+    <keyword>mesh</keyword>
+    <keyword>zero-trust</keyword>
+  </keywords>
+  <provides>
+    <binary>netbird</binary>
+    <binary>netbird-ui</binary>
+  </provides>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+</component>
