@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=NetBird
+Comment=Connect your devices into a secure WireGuard-based overlay network
+Exec=netbird-ui
+Icon=io.netbird.Client
+Terminal=false
+Type=Application
+Categories=Network;VPN;Security;
+Keywords=vpn;wireguard;network;security;mesh;
+StartupNotify=true
+StartupWMClass=netbird-ui
