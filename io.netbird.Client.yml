@@ -28,7 +28,18 @@ finish-args:
 modules:
   - name: netbird
     buildsystem: simple
+    only-arches:
+      - x86_64
+      - aarch64
     build-commands:
+      - |
+        if [ ! -f netbird ]; then
+          echo "Error: netbird binary not found. This may indicate a download failure."
+          echo "Try clearing the cache: rm -rf .flatpak-builder/"
+          echo "Available files in build directory:"
+          ls -la
+          exit 1
+        fi
       - install -Dm755 netbird /app/bin/netbird
     sources:
       - type: archive
@@ -48,11 +59,41 @@ modules:
     only-arches:
       - x86_64
     build-commands:
+      - |
+        if [ ! -f netbird-ui ]; then
+          echo "Error: netbird-ui binary not found. This may indicate a download failure."
+          echo "Try clearing the cache: rm -rf .flatpak-builder/"
+          echo "Available files in build directory:"
+          ls -la
+          exit 1
+        fi
       - install -Dm755 netbird-ui /app/bin/netbird-ui
     sources:
       - type: archive
         url: https://github.com/netbirdio/netbird/releases/download/v0.61.0/netbird-ui-linux_0.61.0_linux_amd64.tar.gz
         sha256: 14a7674bc5f4ad3578e9d2098b13d7ffe0ddb70fccb2367817c4124911e590c2
+
+  # Fallback for ARM64: create a wrapper script since netbird-ui is not available
+  - name: netbird-ui-fallback
+    buildsystem: simple
+    only-arches:
+      - aarch64
+    build-commands:
+      - |
+        cat > /app/bin/netbird-ui << 'EOF'
+        #!/bin/sh
+        echo "NetBird UI is not available for ARM64/aarch64 architecture."
+        echo "The upstream project does not provide ARM64 Linux UI builds."
+        echo ""
+        echo "You can use the CLI instead:"
+        echo "  flatpak run --command=netbird io.netbird.Client status"
+        echo "  flatpak run --command=netbird io.netbird.Client up"
+        echo "  flatpak run --command=netbird io.netbird.Client down"
+        echo ""
+        echo "Or run 'netbird' directly:"
+        exec /app/bin/netbird "$@"
+        EOF
+        chmod 755 /app/bin/netbird-ui
 
   - name: metadata
     buildsystem: simple
